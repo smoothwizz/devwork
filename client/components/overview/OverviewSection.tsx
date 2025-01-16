@@ -38,6 +38,7 @@ import SaveFileSection from './SaveFileSection'
 import TitleField from './TitleField/TitleField'
 import FullscreenModal from '../common/FullscreenModal'
 import NotesSection from './NotesSection'
+import CodeEditorSection from './CodeEditorSection'
 
 type Props = {
   handleReset: () => void
@@ -59,6 +60,13 @@ const OverviewSection = ({ handleReset }: Props) => {
 
   const toggleNotes = () => {
     setUserSettings({ ...userSettings, showNotes: !userSettings.showNotes })
+  }
+
+  const toggleCodeEditor = () => {
+    setUserSettings({
+      ...userSettings,
+      showCodeEditor: !userSettings.showCodeEditor,
+    })
   }
 
   const toggleSnippets = () => {
@@ -162,7 +170,10 @@ const OverviewSection = ({ handleReset }: Props) => {
         {userSettings.showSubtasks && (
           <SubtasksSection toggle={toggleSubtasks} />
         )}
-        {userSettings.showNotes && <NotesSection toggle={toggleTimer} />}
+        {userSettings.showNotes && <NotesSection toggle={toggleNotes} />}
+        {userSettings.showCodeEditor && (
+          <CodeEditorSection toggle={toggleCodeEditor} />
+        )}
         {userSettings.showSnippets && (
           <SnippetsSection toggle={toggleSnippets} />
         )}
@@ -195,6 +206,16 @@ const OverviewSection = ({ handleReset }: Props) => {
 
             <ButtonLink showAsLink={false} action={toggleNotes} style="text-xs">
               <span>{userSettings.showNotes ? 'Hide' : 'Show'} Notes</span>
+            </ButtonLink>
+
+            <ButtonLink
+              showAsLink={false}
+              action={toggleCodeEditor}
+              style="text-xs"
+            >
+              <span>
+                {userSettings.showCodeEditor ? 'Hide' : 'Show'} Code Editor
+              </span>
             </ButtonLink>
 
             <ButtonLink

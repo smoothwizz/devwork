@@ -13,6 +13,7 @@ const KEYS = {
   snippets: 'snippets',
   subTasks: 'subtasks',
   notes: 'notes',
+  code: 'code',
   userSettings: 'userSettings'
 }
 
@@ -20,12 +21,14 @@ type USER_SETTINGS = {
   showSubtasks: boolean,
   showNotes: boolean,
   showSnippets: boolean,
-  showTimer: boolean
+  showTimer: boolean,
+  showCodeEditor: boolean,
 }
 
 export const atom_filename = atomWithStorage(KEYS.filename, 'task.md')
 export const atom_snippets = atomWithStorage<Array<Snippet>>(KEYS.snippets, [])
 export const atom_notes = atomWithStorage(KEYS.notes, '')
+export const atom_code = atomWithStorage(KEYS.code, '')
 export const atom_description = atomWithStorage(
   KEYS.description,
   DEFAULT_TEMPLATES.blank.description,
@@ -35,6 +38,7 @@ export const atom_settings = atomWithStorage<USER_SETTINGS>(KEYS.userSettings, {
   showNotes: true,
   showSnippets: false,
   showTimer: true,
+  showCodeEditor: false,
 })
 
 export const atom_subTasks = atomWithStorage<Array<Task>>(KEYS.subTasks, [])
