@@ -41,7 +41,7 @@ const Greeting = () => {
   const greetingMessage = getGreetingMessage()
 
   return (
-    <div className="w-full">
+    <div>
       <h2
         id="greeting"
         className="text-lg text-gray-700 dark:text-gray-100 font-bold mt-3 mb-3"

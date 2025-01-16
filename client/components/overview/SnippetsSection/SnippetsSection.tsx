@@ -4,15 +4,16 @@ import { Snippet, atom_snippets } from 'jotai/atoms'
 import SnippetItem from './SnippetItem'
 import { FaPlusCircle } from 'react-icons/fa'
 
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { nanoid } from 'nanoid'
 import SectionHeading from '../common/SectionHeading.component'
 
-type Props = {}
+interface Props {
+  toggle: Dispatch<SetStateAction<boolean>>
+}
 
-export default function SnippetsSection({}: Props) {
+export default function SnippetsSection({toggle}: Props) {
   const [list, setList] = useAtom(atom_snippets)
-  const [isExpanded, setIsExpanded] = useState(true)
   const hasSnippets = list.length > 0
 
   return (
@@ -23,10 +24,9 @@ export default function SnippetsSection({}: Props) {
         subHeading={
           '* Think of a snippet as a paragraph in a textbook: you sometimes want to save it for later'
         }
-        isExpanded={isExpanded}
-        handleToggle={() => setIsExpanded(!isExpanded)}
+        handleToggle={toggle}
       />
-      {isExpanded && renderList()}
+      {renderList()}
     </section>
   )
 

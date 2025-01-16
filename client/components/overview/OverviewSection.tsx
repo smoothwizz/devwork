@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import { pagePadding } from '../common/common'
 import ConfettiExplosion from 'react-confetti-explosion'
 
@@ -14,7 +16,7 @@ import TaskDetails from './TaskDetails'
 import SubtasksSection from './SubtasksSection'
 import Greeting from '../common/Greeting'
 import TemplateSection from './TemplateSection'
-import { atom_description, atom_filename } from 'jotai/atoms'
+import { atom_description, atom_filename, atom_settings } from 'jotai/atoms'
 import {
   DEFAULT_TEMPLATES,
   TEMPLATES_WITH_DATES,
@@ -22,7 +24,14 @@ import {
 import { TemplateVariant } from './TemplateSection/TemplateSection.component'
 import { getCurrentDate } from 'utils/functions'
 import ButtonCircle from '../forms/buttons/ButtonCircle'
-import { FaExpand, FaEye, FaEyeSlash, FaFile, FaTimes } from 'react-icons/fa'
+import {
+  FaCog,
+  FaExpand,
+  FaEye,
+  FaEyeSlash,
+  FaFile,
+  FaTimes,
+} from 'react-icons/fa'
 import OpenFileSection from './OpenFileSection'
 import ButtonFontIcon from '../forms/buttons/ButtonFontIcon'
 import SaveFileSection from './SaveFileSection'
@@ -40,18 +49,55 @@ const OverviewSection = ({ handleReset }: Props) => {
   const CONFETTI_TIMER = 5000
   const pageTitle = OVERVIEW_PAGE_TITLE
   const myStore = createStore()
+  const [isMounted, setIsMounted] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [isPreview, setIsPreview] = useState(false)
+  const [isUserSettingsMenuExpanded, setIsUserSettingsMenuExtended] =
+    useState(false)
+  const [userSettings, setUserSettings] = useAtom(atom_settings)
+
+  const toggleNotes = () => {
+    setUserSettings({ ...userSettings, showNotes: !userSettings.showNotes })
+  }
+
+  const toggleSnippets = () => {
+    setUserSettings({
+      ...userSettings,
+      showSnippets: !userSettings.showSnippets,
+    })
+  }
+
+  const toggleSubtasks = () => {
+    setUserSettings({
+      ...userSettings,
+      showSubtasks: !userSettings.showSubtasks,
+    })
+  }
+
+  const toggleTimer = () => {
+    setUserSettings({ ...userSettings, showTimer: !userSettings.showTimer })
+  }
 
   const [, setFilename] = useAtom(atom_filename)
   const [, setDescription] = useAtom(atom_description)
 
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  if (!isMounted) {
+    return <></>
+  }
+
   return (
     <Provider store={myStore}>
       <Seo title={pageTitle} />
-      <section className={`${pagePadding}`}>
-        <Greeting />
+      <section className={`${pagePadding} pb-16`}>
+        <div className="flex justify-between flex-wrap">
+          <Greeting />
+          {renderSectionToggles()}
+        </div>
         <div className={`${showConfetti && 'opacity-30'}`}>
           {renderTaskDashboard()}
         </div>
@@ -69,6 +115,7 @@ const OverviewSection = ({ handleReset }: Props) => {
     setFilename(title)
     setDescription(description)
   }
+
   function renderTask(isFocused: boolean) {
     return (
       <>
@@ -111,10 +158,60 @@ const OverviewSection = ({ handleReset }: Props) => {
           {!isFocused && renderTask(isFocused)}
         </div>
         {renderInfoMessages()}
-        {!isFocused && <Timer />}
-        <SubtasksSection />
-        {<NotesSection />}
-        {<SnippetsSection />}
+        {!isFocused && userSettings.showTimer && <Timer />}
+        {userSettings.showSubtasks && (
+          <SubtasksSection toggle={toggleSubtasks} />
+        )}
+        {userSettings.showNotes && <NotesSection toggle={toggleTimer} />}
+        {userSettings.showSnippets && (
+          <SnippetsSection toggle={toggleSnippets} />
+        )}
+      </div>
+    )
+  }
+
+  function renderSectionToggles(): React.ReactNode {
+    return (
+      <div className="mt-2 text-blue-700 bg-white dark:bg-gray-600 dark:text-blue-300 px-4 py-2 items-center flex gap-2">
+        <ButtonLink
+          showAsLink={false}
+          action={() =>
+            setIsUserSettingsMenuExtended(!isUserSettingsMenuExpanded)
+          }
+        >
+          <FaCog />
+        </ButtonLink>
+        {isUserSettingsMenuExpanded && (
+          <>
+            <ButtonLink
+              showAsLink={false}
+              action={toggleSubtasks}
+              style="text-xs"
+            >
+              <span>
+                {userSettings.showSubtasks ? 'Hide' : 'Show'} Subtasks
+              </span>
+            </ButtonLink>
+
+            <ButtonLink showAsLink={false} action={toggleNotes} style="text-xs">
+              <span>{userSettings.showNotes ? 'Hide' : 'Show'} Notes</span>
+            </ButtonLink>
+
+            <ButtonLink
+              showAsLink={false}
+              action={toggleSnippets}
+              style="text-xs"
+            >
+              <span>
+                {userSettings.showSnippets ? 'Hide' : 'Show'} Snippets
+              </span>
+            </ButtonLink>
+
+            <ButtonLink showAsLink={false} action={toggleTimer} style="text-xs">
+              <span>{userSettings.showTimer ? 'Hide' : 'Show'} Timer</span>
+            </ButtonLink>
+          </>
+        )}
       </div>
     )
   }

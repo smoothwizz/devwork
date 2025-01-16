@@ -8,6 +8,7 @@ import PauseSVG from 'icons/PauseSVG'
 import SettingsSVG from 'icons/SettingsSVG'
 import MaximizeSVG from 'icons/MaximizeSVG'
 import MinimizeSVG from 'icons/MinimizeSVG'
+import { FaTimes } from 'react-icons/fa'
 
 const ButtonIconVariants = {
   delete: <DeleteSVG />,
@@ -18,6 +19,7 @@ const ButtonIconVariants = {
   log: <LogSVG />,
   play: <PlaySVG />,
   pause: <PauseSVG />,
+  close: <FaTimes />,
   settings: <SettingsSVG />,
   unlock: <span title="Unlock Scroll">🔓</span>,
 }

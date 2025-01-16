@@ -1,15 +1,16 @@
 import { useAtom } from 'jotai'
 import { atom_notes } from 'jotai/atoms'
 
-import React, { useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useRef } from 'react'
 import SectionHeading from '../common/SectionHeading.component'
 import Textarea from '@/components/forms/input/Textarea'
 
-type Props = {}
+interface Props {
+  toggle: Dispatch<SetStateAction<boolean>>
+}
 
-export default function NotesSection({}: Props) {
+export default function NotesSection({toggle}: Props) {
   const [notes, setNotes] = useAtom(atom_notes)
-  const [isExpanded, setIsExpanded] = useState(true)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   return (
@@ -22,10 +23,9 @@ export default function NotesSection({}: Props) {
         subHeading={
           '* Jot down distracting but important thoughts to revisit later.'
         }
-        isExpanded={isExpanded}
-        handleToggle={() => setIsExpanded(!isExpanded)}
+        handleToggle={toggle}
       />
-      {isExpanded && renderTextarea()}
+      {renderTextarea()}
     </section>
   )
 

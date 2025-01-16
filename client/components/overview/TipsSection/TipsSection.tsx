@@ -32,7 +32,6 @@ const TipsSection = () => {
         subHeading={
           '* Simple strategies to combat distractions, get more done, and feel accomplished.'
         }
-        isExpanded={isExpanded}
         handleToggle={() => setIsExpanded(!isExpanded)}
       />
       {isExpanded && (
