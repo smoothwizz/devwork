@@ -23,7 +23,6 @@ import { TemplateVariant } from './TemplateSection/TemplateSection.component'
 import { getCurrentDate } from 'utils/functions'
 import ButtonCircle from '../forms/buttons/ButtonCircle'
 import { FaExpand, FaEye, FaEyeSlash, FaFile, FaTimes } from 'react-icons/fa'
-import { useSearchParams } from 'next/navigation'
 import OpenFileSection from './OpenFileSection'
 import ButtonFontIcon from '../forms/buttons/ButtonFontIcon'
 import SaveFileSection from './SaveFileSection'
@@ -47,20 +46,6 @@ const OverviewSection = ({ handleReset }: Props) => {
 
   const [, setFilename] = useAtom(atom_filename)
   const [, setDescription] = useAtom(atom_description)
-  const searchParams = useSearchParams()
-
-  //const isDev = searchParams.get('dev') === 'true'
-
-  function loadTemplate(variant: TemplateVariant) {
-    let description = DEFAULT_TEMPLATES[variant].description
-    let title = DEFAULT_TEMPLATES[variant]?.filename || 'task'
-
-    if (TEMPLATES_WITH_DATES.includes(variant)) {
-      description = description.replace('dd.mm.yyyy', getCurrentDate())
-    }
-    setFilename(title)
-    setDescription(description)
-  }
 
   return (
     <Provider store={myStore}>
@@ -74,6 +59,16 @@ const OverviewSection = ({ handleReset }: Props) => {
     </Provider>
   )
 
+  function loadTemplate(variant: TemplateVariant) {
+    let description = DEFAULT_TEMPLATES[variant].description
+    let title = DEFAULT_TEMPLATES[variant]?.filename || 'task'
+
+    if (TEMPLATES_WITH_DATES.includes(variant)) {
+      description = description.replace('dd.mm.yyyy', getCurrentDate())
+    }
+    setFilename(title)
+    setDescription(description)
+  }
   function renderTask(isFocused: boolean) {
     return (
       <>
