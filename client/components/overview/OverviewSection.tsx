@@ -29,6 +29,7 @@ import ButtonFontIcon from '../forms/buttons/ButtonFontIcon'
 import SaveFileSection from './SaveFileSection'
 import TitleField from './TitleField/TitleField'
 import FullscreenModal from '../common/FullscreenModal'
+import NotesSection from './NotesSection'
 
 type Props = {
   handleReset: () => void
@@ -48,7 +49,7 @@ const OverviewSection = ({ handleReset }: Props) => {
   const [, setDescription] = useAtom(atom_description)
   const searchParams = useSearchParams()
 
-  const isDev = searchParams.get('dev') === 'true'
+  //const isDev = searchParams.get('dev') === 'true'
 
   function loadTemplate(variant: TemplateVariant) {
     let description = DEFAULT_TEMPLATES[variant].description
@@ -117,7 +118,8 @@ const OverviewSection = ({ handleReset }: Props) => {
         {renderInfoMessages()}
         {!isFocused && <Timer />}
         <SubtasksSection />
-        {isDev && <SnippetsSection />}
+        {<NotesSection />}
+        {<SnippetsSection />}
       </div>
     )
   }
