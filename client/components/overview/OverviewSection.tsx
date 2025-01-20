@@ -261,7 +261,7 @@ const OverviewSection = ({ handleReset }: Props) => {
           <ButtonFontIcon
             title="New Task"
             action={() => {
-              setDescription('')
+              handleReset();
               setIsPreview(false)
             }}
           >
@@ -269,12 +269,14 @@ const OverviewSection = ({ handleReset }: Props) => {
           </ButtonFontIcon>
           <TemplateSection
             handleTemplateChange={(variant) => {
+              handleReset();
               loadTemplate(variant)
               setIsPreview(false)
             }}
           />
           <OpenFileSection
             handleFileLoad={(name, content) => {
+              handleReset();
               setFilename(name || 'task.md')
               setDescription(content)
               setIsPreview(false)

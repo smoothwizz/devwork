@@ -3,6 +3,7 @@ import React from 'react'
 import Container from '../container/Container.component'
 
 import {
+  atom_code,
   atom_description,
   atom_notes,
   atom_snippets,
@@ -23,6 +24,7 @@ const OverviewPage = () => {
   const [, setDescription] = useAtom(atom_description)
   const [, setSnippets] = useAtom(atom_snippets)
   const [, setNotes] = useAtom(atom_notes)
+  const [, setCode] = useAtom(atom_code)
 
   const router = useRouter()
   const sectionProps = {
@@ -41,6 +43,7 @@ const OverviewPage = () => {
     setDescription(RESET)
     setSnippets(RESET)
     setNotes(RESET)
+    setCode(RESET)
     router.push('/overview#greeting')
   }
 }
